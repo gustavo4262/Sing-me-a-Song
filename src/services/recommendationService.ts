@@ -10,8 +10,10 @@ export async function create (name:string, youtubeLink:string) {
         throw Error("Bad Request")
     }
 
-    if (!recommendationRepository.checkNewRecommendationIsAvailable(name, youtubeLink))
+    const isAvailable = await recommendationRepository.checkNewRecommendationIsAvailable(name, youtubeLink);
+    if (!isAvailable){
         throw Error("Conflict")
+    }
 
     await recommendationRepository.create(name, youtubeLink)
     
