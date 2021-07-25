@@ -97,3 +97,15 @@ describe("get /recommendations/random", () => {
     expect(result.status).toEqual(200)
   })
 })
+
+describe("get /recommendations/top/:amount", () => {
+  it("should return 404 for empty database", async () => {
+    const result = await agent.get("/recommendations/random")
+    expect(result.status).toEqual(404)
+  })
+  it("should return 200", async () => {
+    await populateDatabase()
+    const result = await agent.get("/recommendations/random")
+    expect(result.status).toEqual(200)
+  })
+})
