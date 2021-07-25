@@ -45,8 +45,10 @@ async function downvote(id:number) {
         await recommendationRepository.remove(id);
 }
 
-export async function getRandom() {
+export async function getRandom() : Promise <{id:number, name:string, youtubeLink:string, score:number}> {
     const recommendations = await recommendationRepository.getAll();
+
+    if (recommendations.length === 0) throw Error('Not Found')
 
     const sortedRecommendations = recommendations.sort((a, b) => a.score > b.score ? 1 : -1);
     const firstHighScoreIndex = recommendations.findIndex(a => a.score >= 10 );
@@ -63,4 +65,11 @@ export async function getRandom() {
     }
     if (arrayUsed[index] === undefined) console.log(arrayUsed, index, randomNumber)
     return arrayUsed[index]
+}
+
+export async function getTop(amount:number) : Promise <{id:number, name:string, youtubeLink:string, score:number}[]>{
+    const recommendations = await recommendationRepository.getAll();
+    const sortedRecommendations = recommendations.sort((a, b) => a.score > b.score ? -1 : 1);
+    const result = sortedRecommendations.slice(0, amount)
+    return result;
 }

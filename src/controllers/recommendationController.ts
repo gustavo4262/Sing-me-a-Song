@@ -49,11 +49,25 @@ export async function downvote(req:Request, res:Response){
 export async function getRandom(req:Request, res:Response){
     try{    
         const recommendation = await recommendationService.getRandom();
-        if ( recommendation === undefined) throw Error
         res.send(recommendation);
     }
     catch(err){
-        console.log(err.message)
+        if (err.message === "Not Found") return res.sendStatus(404);
+        res.sendStatus(500);
+    }
+}
+
+export async function getTop(req:Request, res:Response) {
+    try{
+        const amount = Number(req.params.amount);
+        if(! (amount > 0) ) throw Error('Bad Request');
+        const result = await recommendationService.getTop(amount);
+        if (result.length === 0) throw Error('Not Found');
+        res.send(result);
+    }
+    catch(err){
+        if (err.message === 'Bad Request') return res.sendStatus(400);
+        if (err.message === 'Not Found') return res.sendStatus(404);
         res.sendStatus(500);
     }
 }

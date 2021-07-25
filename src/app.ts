@@ -13,5 +13,8 @@ app.post('/recommendations/:id/upvote', recommendationController.upvote );
 
 app.post('/recommendations/:id/downvote', recommendationController.downvote );
 
-app.get('/recommendations/random', recommendationController.getRandom )
+app.get('/recommendations/random', recommendationController.getRandom );
+
+app.get('/recommendations/top/:amount', recommendationController.getTop );
+
 export default app;
