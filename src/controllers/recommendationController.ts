@@ -26,7 +26,6 @@ export async function upvote(req:Request, res:Response){
         res.sendStatus(200);
     }
     catch(err) {
-        console.log(err.message)
         if (err.message === "Not Found") return res.sendStatus(404)
         res.sendStatus(500)
     }
@@ -41,7 +40,6 @@ export async function downvote(req:Request, res:Response){
         res.sendStatus(200);
     }
     catch(err) {
-        console.log(err.message)
         if (err.message === "Not Found") return res.sendStatus(404)
         res.sendStatus(500)
     }

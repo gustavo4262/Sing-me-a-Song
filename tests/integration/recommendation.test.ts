@@ -21,7 +21,6 @@ describe("post /recommendations", () => {
       youtubeLink: youtubeLink || "https://www.youtube.com/watch?v=chwyjJbcs1Y"
     }
   }
-
   it(`should answer with status 201 when given valid data`, async () => {
     const body = generateBody({});
 
@@ -29,7 +28,6 @@ describe("post /recommendations", () => {
 
     expect(result.status).toEqual(201)
   });
-
   it(`should answer 400 when data is empty`, async () => {
     const body = {}
 
@@ -37,7 +35,6 @@ describe("post /recommendations", () => {
 
     expect(result.status).toEqual(400)
   })
-
   it(`should answer 400 when name is not string`, async () => {
     const body = {name:12345}
 
@@ -45,7 +42,6 @@ describe("post /recommendations", () => {
 
     expect(result.status).toEqual(400)
   })
-
   it(`should answer 400 when youtubeLink is not a link from youtube`, async () => {
     const body = {youtubeLink:"https://ge.globo.com/"}
 
@@ -53,7 +49,6 @@ describe("post /recommendations", () => {
 
     expect(result.status).toEqual(400)
   })
-
   it(`should answer 409 when name alredy exists`, async () => {
     const name = "test_user"
 
@@ -66,3 +61,27 @@ describe("post /recommendations", () => {
     expect(result.status).toEqual(409)
   })
 });
+
+describe("post /recommendation/:id/upvote", () => {
+  it("should return 200 for valid params", async () => {
+    const { id } = await createRecommendation({});
+    const result = await agent.post(`/recommendations/${id}/upvote`)
+    expect(result.status).toEqual(200)
+  })
+  it("should return 404 for invalid id", async () => {
+    const result = await agent.post(`/recommendations/-1/upvote`)
+    expect(result.status).toEqual(404)
+  })
+})
+
+describe("post /recommendation/:id/downvote", () => {
+  it("should return 200 for valid params", async () => {
+    const { id } = await createRecommendation({score:-5});
+    const result = await agent.post(`/recommendations/${id}/downvote`)
+    expect(result.status).toEqual(200)
+  })
+  it("should return 404 for invalid id", async () => {
+    const result = await agent.post(`/recommendations/-1/downvote`)
+    expect(result.status).toEqual(404)
+  })
+})
