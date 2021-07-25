@@ -19,3 +19,43 @@ export async function checkNewRecommendationIsAvailable(name:string, youtubeLink
     )
     return result.rowCount === 0
 }
+
+export async function checkRecommendationExists(id:number) : Promise<boolean> {
+    const result = await connection.query(
+        `SELECT *
+         FROM recommendations
+         WHERE id = $1`,
+         [id]
+    )
+    return result.rowCount !== 0
+}
+
+export async function upvote(id:number) : Promise <{score:Number}> {
+    const result = await connection.query(
+        `UPDATE recommendations
+         SET score = score + 1
+         WHERE id = $1
+         RETURNING score`,
+         [id]
+    )
+    return result.rows[0]
+}
+
+export async function downvote(id:number) : Promise <{score:Number}> {
+    const result = await connection.query(
+        `UPDATE recommendations
+         SET score = score - 1
+         WHERE id = $1
+         RETURNING score`,
+         [id]
+    )
+    return result.rows[0]
+}
+
+export async function remove(id:number) {
+    await connection.query(
+        `DELETE FROM recommendations
+         WHERE id = $1`,
+         [id]
+    )
+}
