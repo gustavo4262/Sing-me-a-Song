@@ -85,3 +85,10 @@ describe("post /recommendation/:id/downvote", () => {
     expect(result.status).toEqual(404)
   })
 })
+
+describe("get /recommendations/random", () => {
+  it("should return 200", async () => {
+    const result = await agent.get("/recommendations/random")
+    expect(result.status).toEqual(200)
+  })
+})
