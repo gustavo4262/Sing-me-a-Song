@@ -59,3 +59,11 @@ export async function remove(id:number) {
          [id]
     )
 }
+
+export async function getAll() : Promise <{id:number, name:string, youtubeLink:string, score:number}[]>{
+    const result = await connection.query(
+        `SELECT *
+         FROM recommendations`
+    )
+    return result.rows
+}

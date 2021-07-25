@@ -44,3 +44,23 @@ async function downvote(id:number) {
     if (result.score < -5)
         await recommendationRepository.remove(id);
 }
+
+export async function getRandom() {
+    const recommendations = await recommendationRepository.getAll();
+
+    const sortedRecommendations = recommendations.sort((a, b) => a.score > b.score ? 1 : -1);
+    const firstHighScoreIndex = recommendations.findIndex(a => a.score >= 10 );
+    const randomNumber = Math.random();
+    let arrayUsed, index
+
+    if (randomNumber < 0.7){
+        arrayUsed = sortedRecommendations.slice(firstHighScoreIndex);
+        index = Math.floor( randomNumber * arrayUsed.length / 0.7 );
+    }
+    else{
+        arrayUsed = sortedRecommendations.slice(0, firstHighScoreIndex);
+        index = Math.floor( (randomNumber - 0.7) *  arrayUsed.length / 0.3 );
+    }
+    if (arrayUsed[index] === undefined) console.log(arrayUsed, index, randomNumber)
+    return arrayUsed[index]
+}

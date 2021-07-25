@@ -1,3 +1,4 @@
+import exp from 'constants';
 import {Request, Response} from 'express'
 import * as recommendationService from '../services/recommendationService'
 
@@ -42,5 +43,16 @@ export async function downvote(req:Request, res:Response){
     catch(err) {
         if (err.message === "Not Found") return res.sendStatus(404)
         res.sendStatus(500)
+    }
+}
+
+export async function getRandom(req:Request, res:Response){
+    try{    
+        const recommendation = await recommendationService.getRandom();
+        if ( recommendation === undefined) throw Error
+        res.send(recommendation);
+    }
+    catch(err){
+        res.sendStatus(500);
     }
 }
