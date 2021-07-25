@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import app from "../../src/app";
-import { createRecommendation } from "../factories/recommendationFactory";
+import { createRecommendation, populateDatabase } from "../factories/recommendationFactory";
 import {clearDatabase, endConnection} from '../utils/database'
 
 const agent = supertest(app)
@@ -88,6 +88,7 @@ describe("post /recommendation/:id/downvote", () => {
 
 describe("get /recommendations/random", () => {
   it("should return 200", async () => {
+    await populateDatabase()
     const result = await agent.get("/recommendations/random")
     expect(result.status).toEqual(200)
   })

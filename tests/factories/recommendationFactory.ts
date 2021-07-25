@@ -19,3 +19,10 @@ export async function createRecommendation( { name, youtubeLink, score } : { nam
 
     return result.rows[0]
 }
+
+export async function populateDatabase(){
+    for (let i=0; i<10; i++){
+        let score = Math.floor(Math.random() * 70) - 5
+        await createRecommendation({score})
+    }
+}

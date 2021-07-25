@@ -53,6 +53,7 @@ export async function getRandom(req:Request, res:Response){
         res.send(recommendation);
     }
     catch(err){
+        console.log(err.message)
         res.sendStatus(500);
     }
 }
