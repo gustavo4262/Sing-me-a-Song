@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../../src/app";
 import { createRecommendation, populateDatabase } from "../factories/recommendationFactory";
-import {clearDatabase, endConnection} from '../utils/database'
+import { clearDatabase, endConnection } from '../utils/database'
 
 const agent = supertest(app)
 
