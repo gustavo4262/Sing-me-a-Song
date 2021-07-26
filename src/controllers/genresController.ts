@@ -18,9 +18,11 @@ export async function create(req:Request, res:Response) {
 export async function getAll(req:Request, res:Response) {
     try{
         const allGenres = await genreService.getAll();
+        if (allGenres.length === 0) throw Error('Not Found');
         res.send(allGenres);
     }
     catch(err) {
+        if (err.message === 'Not Found') return res.sendStatus(404);
         res.sendStatus(500);
     }
 }
