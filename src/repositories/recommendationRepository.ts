@@ -67,3 +67,17 @@ export async function getAll() : Promise <{id:number, name:string, youtubeLink:s
     )
     return result.rows
 }
+
+export async function getAllFromGenreId(genreId:number) : Promise <{id:number, name:string, youtubeLink:string, score:number}[]>{
+    const result = await connection.query(
+        `SELECT r.*
+         FROM recommendations AS r
+         JOIN classifications AS c
+         ON r.id = c."recommendationId"
+         JOIN genres AS g
+         on c."genreId" = g.id
+         WHERE g.id = $1`,
+         [genreId]
+    )
+    return result.rows
+}

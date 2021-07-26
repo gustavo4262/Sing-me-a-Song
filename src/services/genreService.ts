@@ -1,4 +1,5 @@
 import * as genreRepository from "../repositories/genreRepository"
+import * as recommendationRepository from '../repositories/recommendationRepository'
 
 export async function create(name:string) {
     const existingGenre = await genreRepository.findByName(name);
@@ -12,7 +13,17 @@ export async function getAll() : Promise<{id:number, name:string}[]> {
     return sortedGenres;
 }
 
-export async function getById(id:number) : Promise<{id:number, name:string}>{
+export async function getById(id:number){
     const genre = await genreRepository.getById(id);
-    return genre;
+    
+    let result : Record<string, any> = { id:genre.id, name:genre.name, score:genre.score, recommendations: []}
+
+    const recommendations = await recommendationRepository.getAllFromGenreId(id);
+    await Promise.all(
+        recommendations.map(async (rec) => {
+            const recGenres = await genreRepository.getAllFromRecommendationId(rec.id);
+            const recObject = {id: rec.id, name:rec.name, youtubeLink:rec.youtubeLink, score:rec.score, genres:recGenres}
+            result.recommendations.push(recObject)
+    }))
+    return result;
 }

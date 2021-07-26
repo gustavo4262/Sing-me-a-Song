@@ -22,4 +22,6 @@ app.post('/genres', genreController.create )
 
 app.get('/genres', genreController.getAll )
 
+app.get('/genres/:id', genreController.getOne )
+
 export default app;
