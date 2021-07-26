@@ -56,6 +56,20 @@ export async function getRandom(req:Request, res:Response){
     }
 }
 
+export async function getRandomByGenreId(req:Request, res:Response) {
+    try{
+        const genreId = Number(req.params.id);
+        if ( !genreId ) throw Error('Bad Request');
+        const result = await recommendationService.getRandomByGenreId(genreId)
+        res.send(result);
+    }
+    catch(err){
+        if (err.message === 'Not Found') return res.sendStatus(404)
+        if (err.message === 'Bad Request') return res.sendStatus(400)
+        res.sendStatus(500);
+    }
+}
+
 export async function getTop(req:Request, res:Response) {
     try{
         const amount = Number(req.params.amount);

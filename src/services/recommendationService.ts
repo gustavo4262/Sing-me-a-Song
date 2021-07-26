@@ -1,5 +1,6 @@
 import { recommendationSchema } from '../schemas'
 import * as recommendationRepository from '../repositories/recommendationRepository'
+import * as genreRepository from '../repositories/genreRepository'
 
 
 export async function create (name:string, youtubeLink:string) {
@@ -65,6 +66,29 @@ export async function getRandom() : Promise <{id:number, name:string, youtubeLin
     }
     if (arrayUsed[index] === undefined) console.log(arrayUsed, index, randomNumber)
     return arrayUsed[index]
+}
+
+export async function getRandomByGenreId(genreId:number) {
+    const genre = await genreRepository.getById(genreId);
+    if ( !genre ) throw Error('Not Found') 
+    
+    let recArray : { 
+        id:number, 
+        name:string, 
+        youtubeLink:string,
+        score:number, 
+        genres: { id:number, name:string }[] } []
+
+    const recommendations = await recommendationRepository.getAllFromGenreId(genreId);
+    await Promise.all(
+        recommendations.map(async (rec) => {
+            const recGenres = await genreRepository.getAllFromRecommendationId(rec.id);
+            const recObject = {id: rec.id, name:rec.name, youtubeLink:rec.youtubeLink, score:rec.score, genres:recGenres}
+            recArray.push(recObject)
+    }))
+
+    const randomIndex = Math.floor( Math.random() * recArray.length );
+    return recArray[randomIndex]
 }
 
 export async function getTop(amount:number) : Promise <{id:number, name:string, youtubeLink:string, score:number}[]>{

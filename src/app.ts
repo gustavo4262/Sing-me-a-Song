@@ -24,4 +24,6 @@ app.get('/genres', genreController.getAll )
 
 app.get('/genres/:id', genreController.getOne )
 
+app.get('/recommendations/genres/:id/random', recommendationController.getRandomByGenreId )
+
 export default app;
