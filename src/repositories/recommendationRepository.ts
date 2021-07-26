@@ -1,12 +1,23 @@
 import connection from '../database'
 
-export async function create(name:string, youtubeLink:string) {
+export async function create(name:string, youtubeLink:string) : Promise <{id:number, name:string, youtubeLink:string, score:number}> {
     const initialScore = 0;
-    await connection.query(
+    const result = await connection.query(
         `INSERT INTO
          recommendations (name, "youtubeLink", score)
-         VALUES ($1, $2, $3)`,
+         VALUES ($1, $2, $3)
+         RETURNING *`,
          [name, youtubeLink, initialScore]
+    )
+    return result.rows[0]
+}
+
+export async function createClassification(genreId:number, recommendationId:number) {
+    await connection.query(
+        `INSERT INTO
+         classifications ("genreId", "recommendationId")
+         VALUES ($1, $2)`,
+         [genreId, recommendationId]
     )
 }
 

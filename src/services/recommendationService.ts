@@ -3,7 +3,7 @@ import * as recommendationRepository from '../repositories/recommendationReposit
 import * as genreRepository from '../repositories/genreRepository'
 
 
-export async function create (name:string, youtubeLink:string) {
+export async function create (name:string, youtubeLink:string, genresIds:number[]) {
     try{
         await recommendationSchema.validateAsync({name, youtubeLink})
     }
@@ -16,7 +16,15 @@ export async function create (name:string, youtubeLink:string) {
         throw Error("Conflict")
     }
 
-    await recommendationRepository.create(name, youtubeLink)
+    const rec = await recommendationRepository.create(name, youtubeLink)
+
+    Promise.all(
+        genresIds.map(async (genreId) => {
+            const genreExists = await genreRepository.checkExists(genreId);
+            if (!genreExists) throw Error('Not Found')
+            await recommendationRepository.createClassification(genreId, rec.id)
+        })
+    )
     
 }
 

@@ -3,9 +3,9 @@ import * as recommendationService from '../services/recommendationService'
 
 export async function createRecommendation(req:Request, res:Response){
     try{
-        const {name, youtubeLink} = req.body;
+        const {name, youtubeLink, genresIds} = req.body;
 
-        await recommendationService.create(name, youtubeLink);
+        await recommendationService.create(name, youtubeLink, genresIds);
        
         return res.sendStatus(201);
     }

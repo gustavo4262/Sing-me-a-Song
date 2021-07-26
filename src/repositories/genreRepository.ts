@@ -9,6 +9,16 @@ export async function create(name:string) {
     )
 }
 
+export async function checkExists(id:number) : Promise<boolean> {
+    const result = await connection.query(
+        `SELECT *
+         FROM genres
+         WHERE id = $1`,
+         [id]
+    )
+    return result.rowCount !== 0;
+}
+
 export async function findByName(name:string) {
     const result = await connection.query(
         `SELECT *

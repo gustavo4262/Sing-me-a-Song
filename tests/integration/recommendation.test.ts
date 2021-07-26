@@ -18,14 +18,17 @@ afterAll( async () => {
 })
 
 describe("post /recommendations", () => {
-  function generateBody( { name, youtubeLink } : { name?:string, youtubeLink?:string }){
+  async function generateBody( { name, youtubeLink } : { name?:string, youtubeLink?:string }){
+    const genres = [await createGenre({}), await createGenre({}) ]
+    const genresIds = genres.map(g => g.id);
     return {
       name: name || "Falamansa - Xote dos Milagres",
-      youtubeLink: youtubeLink || "https://www.youtube.com/watch?v=chwyjJbcs1Y"
+      youtubeLink: youtubeLink || "https://www.youtube.com/watch?v=chwyjJbcs1Y",
+      genresIds
     }
   }
   it(`should answer with status 201 when given valid data`, async () => {
-    const body = generateBody({});
+    const body = await generateBody({});
 
     const result = await agent.post('/recommendations').send(body)
 
@@ -55,7 +58,7 @@ describe("post /recommendations", () => {
   it(`should answer 409 when name alredy exists`, async () => {
     const name = "test_user"
 
-    const body = generateBody({name:name})
+    const body = await generateBody({name:name})
 
     await createRecommendation(body)
 
