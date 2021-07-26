@@ -14,3 +14,13 @@ export async function create(req:Request, res:Response) {
         res.sendStatus(500)
     }
 }
+
+export async function getAll(req:Request, res:Response) {
+    try{
+        const allGenres = await genreService.getAll();
+        res.send(allGenres);
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
+}

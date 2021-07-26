@@ -18,3 +18,11 @@ export async function findByName(name:string) {
     )
     return result.rows[0]
 }
+
+export async function getAll() : Promise<{id:number, name:string}[]> {
+    const result = await connection.query(
+        `SELECT *
+         FROM genres`
+    )
+    return result.rows
+}
