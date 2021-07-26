@@ -26,3 +26,13 @@ export async function getAll() : Promise<{id:number, name:string}[]> {
     )
     return result.rows
 }
+
+export async function getById(id:number) : Promise<{id:number, name:string}> {
+    const result = await connection.query(
+        `SELECT *
+         FROM genres
+         WHERE id = $1`,
+         [id]
+    )
+    return result.rows[0]
+}

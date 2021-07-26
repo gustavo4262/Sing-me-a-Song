@@ -11,3 +11,8 @@ export async function getAll() : Promise<{id:number, name:string}[]> {
     const sortedGenres = genres.sort((a, b) => a.name > b.name ? 1 : -1);
     return sortedGenres;
 }
+
+export async function getById(id:number) : Promise<{id:number, name:string}>{
+    const genre = await genreRepository.getById(id);
+    return genre;
+}
