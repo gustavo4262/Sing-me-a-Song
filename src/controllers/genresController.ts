@@ -35,7 +35,8 @@ export async function getOne(req:Request, res:Response) {
         res.send(genre);
     }
     catch(err) {
-        if (err.message === 'Bad Request') return res.sendStatus(404)
+        if (err.message === 'Bad Request') return res.sendStatus(400)
+        if (err.message === 'Not Found') return res.sendStatus(404)
         res.sendStatus(500)
     }
 }

@@ -15,6 +15,7 @@ export async function getAll() : Promise<{id:number, name:string}[]> {
 
 export async function getById(id:number){
     const genre = await genreRepository.getById(id);
+    if ( !genre ) throw Error('Not Found') 
     
     let result : Record<string, any> = { id:genre.id, name:genre.name, score:genre.score, recommendations: []}
 

@@ -17,7 +17,7 @@ export async function createGenre( { name } : { name?:string} ) : Promise <{id:n
     return result.rows[0]
 }
 
-export async function populateDatabase(){
+export async function populateGenreDatabase(){
     for (let i=0; i<10; i++){
         let name = faker.music.genre();
         await createGenre( { name } )

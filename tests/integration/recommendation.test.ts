@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import app from "../../src/app";
-import { createRecommendation, populateDatabase } from "../factories/recommendationFactory";
+import { createRecommendation, populateRecommendationDatabase } from "../factories/recommendationFactory";
 import { clearDatabase, endConnection } from '../utils/database'
 
 const agent = supertest(app)
@@ -92,7 +92,7 @@ describe("get /recommendations/random", () => {
     expect(result.status).toEqual(404)
   })
   it("should return 200", async () => {
-    await populateDatabase()
+    await populateRecommendationDatabase()
     const result = await agent.get("/recommendations/random")
     expect(result.status).toEqual(200)
   })
@@ -104,7 +104,7 @@ describe("get /recommendations/top/:amount", () => {
     expect(result.status).toEqual(404)
   })
   it("should return 200", async () => {
-    await populateDatabase()
+    await populateRecommendationDatabase()
     const result = await agent.get("/recommendations/random")
     expect(result.status).toEqual(200)
   })

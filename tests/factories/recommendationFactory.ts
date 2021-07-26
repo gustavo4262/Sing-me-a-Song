@@ -1,6 +1,6 @@
 import connection from '../../src/database'
 
-export async function createRecommendation( { name, youtubeLink, score } : { name?:string, youtubeLink?:string, score?:number } ) {
+export async function createRecommendation( { name, youtubeLink, score } : { name?:string, youtubeLink?:string, score?:number } ) : Promise<{id:number, name:string, youtubeLink:string, score:number }> {
     const data = {
         name: name || "Falamansa - Xote dos Milagres",
 	    youtubeLink: youtubeLink || "https://www.youtube.com/watch?v=chwyjJbcs1Y",
@@ -20,7 +20,7 @@ export async function createRecommendation( { name, youtubeLink, score } : { nam
     return result.rows[0]
 }
 
-export async function populateDatabase(){
+export async function populateRecommendationDatabase(){
     for (let i=0; i<10; i++){
         let score = Math.floor(Math.random() * 70) - 5
         await createRecommendation({score})
