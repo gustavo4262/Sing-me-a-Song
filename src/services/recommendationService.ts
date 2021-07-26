@@ -72,12 +72,12 @@ export async function getRandomByGenreId(genreId:number) {
     const genre = await genreRepository.getById(genreId);
     if ( !genre ) throw Error('Not Found') 
     
-    let recArray : { 
+    const recArray : { 
         id:number, 
         name:string, 
         youtubeLink:string,
         score:number, 
-        genres: { id:number, name:string }[] } []
+        genres: { id:number, name:string }[] } [] = []
 
     const recommendations = await recommendationRepository.getAllFromGenreId(genreId);
     await Promise.all(
